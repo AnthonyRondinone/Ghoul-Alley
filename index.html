@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <style media="screen">
+      canvas {
+        border: 1px solid black;
+        display: flex;
+        margin: auto;
+      }
+    </style>
+    <script type="text/javascript">
+    document.addEventListener('DOMContentLoaded', () => {
+
+      let canvas = document.getElementById('canvas');
+      let ctx = canvas.getContext('2d');
+
+
+      const backgroundImg = new Image();
+      backgroundImg.src = 'assets/background.png';
+      backgroundImg.onload = function() {
+        ctx.drawImage(backgroundImg, 200, 200, backgroundImg.width / 1.35, backgroundImg.height / 1.35, 0, 0, canvas.width, canvas.height);
+      }
+
+
+      class Player  {
+        constructor(options) {
+          this.context = options.context,
+          this.width = options.width,
+          this.height = options.height,
+          this.image = options.image
+        }
+
+        render() {
+          this.image.onload = () => {
+            this.context.drawImage(
+              this.image,
+              0,
+              0,
+              this.width,
+              this.height,
+              0,
+              0,
+              this.width,
+              this.height
+            );
+          }
+        }
+
+      }
+
+      const anthonyCharImg = new Image();
+      anthonyCharImg.src = 'assets/AnthonySpriteSheetReSize.png';
+
+
+      anthonyCharOptions = {
+        context: ctx,
+        width: 1000,
+        height: 1000,
+        image: anthonyCharImg
+      }
+
+      const Anthony = new Player (anthonyCharOptions);
+      Anthony.render();
+
+
+    })
+
+    </script>
+  </head>
+  <body>
+    <canvas id="canvas" width="1035" height="700"></canvas>
+  </body>
+</html>

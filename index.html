@@ -33,9 +33,13 @@
           this.dy = this.context.canvas.height / 2,
           this.numberOfFrames = options.numberOfFrames || 1;
           this.frameIndex = 0;
+          this.spriteAnimationCounter = 0;
         }
 
-        
+        update() {
+
+        }
+
 
 
         draw(keyCode) {
@@ -62,7 +66,7 @@
               break;
           }
 
-          let animationMod = 0
+          let animationMod = 0;
 
           this.context.drawImage(
             this.image,

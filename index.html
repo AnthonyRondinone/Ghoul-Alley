@@ -7,6 +7,10 @@
         border: 1px solid black;
         display: flex;
         margin: auto;
+        background-image: url('assets/background.png');
+        background-size: 150%;
+        background-position: bottom;
+
       }
     </style>
     <script type="text/javascript">
@@ -16,52 +20,89 @@
       let ctx = canvas.getContext('2d');
 
 
-      const backgroundImg = new Image();
-      backgroundImg.src = 'assets/background.png';
-      backgroundImg.onload = function() {
-        ctx.drawImage(backgroundImg, 200, 200, backgroundImg.width / 1.35, backgroundImg.height / 1.35, 0, 0, canvas.width, canvas.height);
-      }
+      const anthonyCharImg = new Image();
+      anthonyCharImg.src = 'assets/rondsprite.png';
 
-
-      class Player  {
+      class Player {
         constructor(options) {
           this.context = options.context,
           this.width = options.width,
           this.height = options.height,
-          this.image = options.image
+          this.image = options.image,
+          this.dx = this.context.canvas.width - 1000,
+          this.dy = this.context.canvas.height / 2,
+          this.numberOfFrames = options.numberOfFrames || 1;
+          this.frameIndex = 0;
+        }
+
+
+        draw(keyCode) {
+          this.context.clearRect(this.dx, this.dy, this.width / this.numberOfFrames, this.height / 6);
+
+
+
+          let frameWidth = this.width / 8;
+          let frameHeight = this.height / 6;
+
+          let animationSelector = 0; // draw right
+
+          switch(keyCode) {
+            case 37:  // left
+              this.dx -= 10;
+              break;
+            case 39: // right
+              this.dx += 10;
+              break;
+          }
+
+          this.context.drawImage(
+            this.image,
+            this.frameIndex * this.width / this.numberOfFrames, // source x
+            animationSelector * frameHeight, //source y
+            frameWidth, //source width
+            frameHeight, // source height
+            this.dx, // destination x
+            this.dy, // destination y
+            this.width / this.numberOfFrames, // destination width
+            this.height / 6 // destination height
+          );
         }
 
         render() {
           this.image.onload = () => {
             this.context.drawImage(
               this.image,
-              0,
-              0,
-              this.width,
-              this.height,
-              0,
-              0,
-              this.width,
-              this.height
+              this.frameIndex * this.width / this.numberOfFrames, // source x
+              0, //source y
+              this.width / this.numberOfFrames, //source width
+              this.height / 6, // source height
+              this.dx, // destination x
+              this.dy, // destination y
+              this.width / this.numberOfFrames, // destination width
+              this.height / 6 // destination height
             );
           }
         }
 
       }
 
-      const anthonyCharImg = new Image();
-      anthonyCharImg.src = 'assets/AnthonySpriteSheetReSize.png';
 
 
-      anthonyCharOptions = {
+      const anthonyCharOptions = {
         context: ctx,
-        width: 1000,
-        height: 1000,
-        image: anthonyCharImg
+        width: 3197,
+        height: 1994,
+        image: anthonyCharImg,
+        numberOfFrames: 8
       }
 
-      const Anthony = new Player (anthonyCharOptions);
-      Anthony.render();
+      const anthony = new Player (anthonyCharOptions);
+      anthony.render();
+
+
+      document.addEventListener('keydown', (e) => {
+        anthony.draw(e.keyCode)
+      })
 
 
     })

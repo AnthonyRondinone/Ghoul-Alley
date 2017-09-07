@@ -24,9 +24,10 @@
 
       window.setInterval(() => {
         anthony.spriteAnimationCounter += 1;
+
         if (Object.values(anthony.move).every((bool) => bool === false)) {
+          anthony.setIdleDirection(anthony.direction)
           anthony.direction = "idle";
-          anthony.animationSelector = 1;
         }
         anthony.draw(anthony.direction);
       }, 50)
@@ -49,7 +50,7 @@
           this.numberOfFrames = options.numberOfFrames || 1,
           this.frameIndex = 0,
           this.spriteAnimationCounter = 0,
-          this.animationSelector = 0
+          this.animationSelector = 1
           this.move = {
             left: false,
             right: false
@@ -57,7 +58,13 @@
           this.direction = "idle"
         }
 
-
+        setIdleDirection(direction) {
+          if(direction === "right") {
+            this.animationSelector = 1;
+          } else if (direction === "left") {
+            this.animationSelector = 5;
+          }
+        }
 
         draw(direction) {
           this.context.clearRect(this.dx, this.dy, this.width / this.numberOfFrames, this.height / 6);
@@ -72,7 +79,7 @@
           }
 
           let frameWidth = this.width / 8;
-          let frameHeight = this.height / 6;
+          let frameHeight = this.height / 8;
 
           let animationMod = this.spriteAnimationCounter % 8;
 
@@ -85,7 +92,7 @@
             this.dx, // destination x
             this.dy, // destination y
             this.width / this.numberOfFrames, // destination width
-            this.height / 6 // destination height
+            this.height / 8 // destination height
           );
         }
 
@@ -96,11 +103,11 @@
               this.frameIndex * this.width / this.numberOfFrames, // source x
               0, //source y
               this.width / this.numberOfFrames, //source width
-              this.height / 6, // source height
+              this.height / 8, // source height
               this.dx, // destination x
               this.dy, // destination y
               this.width / this.numberOfFrames, // destination width
-              this.height / 6 // destination height
+              this.height / 8 // destination height
             );
           }
         }
@@ -110,7 +117,7 @@
       const anthonyCharOptions = {
         context: ctx,
         width: 3197,
-        height: 1994,
+        height: 2656,
         image: anthonyCharImg,
         numberOfFrames: 8
       }
@@ -124,22 +131,16 @@
           case 37:  // left
             anthony.move.left = true;
             anthony.direction = "left"
-            anthony.animationSelector = 0;
+            anthony.animationSelector = 4;
             break;
           case 39: // right
             anthony.move.right = true;
             anthony.direction = "right"
             anthony.animationSelector = 0;
             break;
-          // case 68: //d jump
-          // case 83: //s punch
-          //   anthony.move.punch = false;
-          //   anthony.direction = "punch";
-          //   anthony.animationSelector = 2;
-          //   break;
-          // case 65: //a block
-          //   anthony.animationSelector = 3;
-          //   break;
+          case 83: //s punch
+            anthony.animationSelector = 2;
+            break;
       }
     })
 
@@ -152,7 +153,6 @@
         case 39: // right
           anthony.move.right = false;
           break;
-        // case 68: //d jump
         case 83: //s punch
           anthony.move.punch = false;
           break;
@@ -164,7 +164,7 @@
 
 // Enemy ========================================================================================================
 
-    
+
 
 
 

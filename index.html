@@ -13,15 +13,30 @@
 
       }
     </style>
+
     <script type="text/javascript">
+
     document.addEventListener('DOMContentLoaded', () => {
 
       let canvas = document.getElementById('canvas');
       let ctx = canvas.getContext('2d');
 
 
+      window.setInterval(() => {
+        anthony.spriteAnimationCounter += 1;
+        if (Object.values(anthony.move).every((bool) => bool === false)) {
+          anthony.direction = "idle";
+          anthony.animationSelector = 1;
+        }
+        anthony.draw(anthony.direction);
+      }, 50)
+
+
+// PLAYER ========================================================================================================
+
       const anthonyCharImg = new Image();
       anthonyCharImg.src = 'assets/rondsprite.png';
+
 
       class Player {
         constructor(options) {
@@ -31,47 +46,40 @@
           this.image = options.image,
           this.dx = this.context.canvas.width - 1000,
           this.dy = this.context.canvas.height / 2,
-          this.numberOfFrames = options.numberOfFrames || 1;
-          this.frameIndex = 0;
-          this.spriteAnimationCounter = 0;
+          this.numberOfFrames = options.numberOfFrames || 1,
+          this.frameIndex = 0,
+          this.spriteAnimationCounter = 0,
+          this.animationSelector = 0
+          this.move = {
+            left: false,
+            right: false
+          }
+          this.direction = "idle"
         }
 
-        update() {
-
-        }
 
 
-
-        draw(keyCode) {
+        draw(direction) {
           this.context.clearRect(this.dx, this.dy, this.width / this.numberOfFrames, this.height / 6);
+
+          switch(direction) {
+            case "left":  // left
+              this.dx -= 10;
+              break;
+            case "right": // right
+              this.dx += 10;
+              break;
+          }
 
           let frameWidth = this.width / 8;
           let frameHeight = this.height / 6;
 
-          let animationSelector = 0; // draw right
-
-          switch(keyCode) {
-            case 37:  // left
-              this.dx -= 10;
-              break;
-            case 39: // right
-              this.dx += 10;
-              break;
-            // case 68: //d jump
-            case 83: //s punch
-              animationSelector = 2;
-              break;
-            case 65: //a block
-              animationSelector = 3;
-              break;
-          }
-
-          let animationMod = 0;
+          let animationMod = this.spriteAnimationCounter % 8;
 
           this.context.drawImage(
             this.image,
-            this.frameIndex * this.width / this.numberOfFrames, // source x
-            animationSelector * frameHeight, //source y
+            animationMod * frameWidth, // source x
+            anthony.animationSelector * frameHeight, //source y
             frameWidth, //source width
             frameHeight, // source height
             this.dx, // destination x
@@ -99,8 +107,6 @@
 
       }
 
-
-
       const anthonyCharOptions = {
         context: ctx,
         width: 3197,
@@ -114,11 +120,53 @@
 
 
       document.addEventListener('keydown', (e) => {
-        anthony.draw(e.keyCode)
-      })
-
-
+        switch(e.keyCode) {
+          case 37:  // left
+            anthony.move.left = true;
+            anthony.direction = "left"
+            anthony.animationSelector = 0;
+            break;
+          case 39: // right
+            anthony.move.right = true;
+            anthony.direction = "right"
+            anthony.animationSelector = 0;
+            break;
+          // case 68: //d jump
+          // case 83: //s punch
+          //   anthony.move.punch = false;
+          //   anthony.direction = "punch";
+          //   anthony.animationSelector = 2;
+          //   break;
+          // case 65: //a block
+          //   anthony.animationSelector = 3;
+          //   break;
+      }
     })
+
+    document.addEventListener('keyup', (e) => {
+
+      switch(e.keyCode) {
+        case 37:  // left
+          anthony.move.left = false;
+          break;
+        case 39: // right
+          anthony.move.right = false;
+          break;
+        // case 68: //d jump
+        case 83: //s punch
+          anthony.move.punch = false;
+          break;
+      }
+    })
+
+// PLAYER ========================================================================================================
+
+
+// Enemy ========================================================================================================
+
+
+
+})
 
     </script>
   </head>

@@ -35,11 +35,11 @@
           this.frameIndex = 0;
         }
 
+        
+
 
         draw(keyCode) {
           this.context.clearRect(this.dx, this.dy, this.width / this.numberOfFrames, this.height / 6);
-
-
 
           let frameWidth = this.width / 8;
           let frameHeight = this.height / 6;
@@ -53,7 +53,16 @@
             case 39: // right
               this.dx += 10;
               break;
+            // case 68: //d jump
+            case 83: //s punch
+              animationSelector = 2;
+              break;
+            case 65: //a block
+              animationSelector = 3;
+              break;
           }
+
+          let animationMod = 0
 
           this.context.drawImage(
             this.image,

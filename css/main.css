@@ -1,0 +1,85 @@
+/*html {
+  display: flex;
+  height: auto;
+  max-width: 100%;
+  background: black;
+}*/
+
+
+body {
+    background-image: url('../assets/mainBack.jpg');
+}
+
+#body-contain {
+  background-size: cover;
+  background-repeat: no-repeat;
+  position: absolute;
+  width: 1500px;
+  min-height: 100vh;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  display: flex;
+}
+
+
+#canvas {
+  border: 1px solid black;
+  display: flex;
+  margin: auto;
+  background-image: url('../assets/background.png');
+  background-size: 150%;
+  background-position: bottom;
+  position: absolute;
+  top: 50%;
+  left: 41%;
+  transform: translate(-50%, -50%);
+  border-radius: 10px;
+  box-shadow: 4px 1px 5px #555 inset;
+
+}
+
+
+.modal-back {
+  position: fixed;
+  top: 0;
+  right: 0;
+  left: 0;
+  bottom: 0;
+  width: 100%;
+  height: 100%;
+  background:rgba(20,10,10,0.5);
+}
+
+.modal-start-message {
+  opacity: .75;
+  z-index: 500;
+  position: fixed;
+  top: 50%;
+  left: 41%;
+  transform: translate(-50%, -50%);
+  width: 50%;
+  height: 50%;
+  border-radius: 10px;
+  box-shadow: 3px 5px 5px 6px #ccc;
+}
+
+.hidden {
+  opacity: 0;
+}
+
+/*.modal-front {
+  z-index: 1005;
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 1005;
+  width: 935px;
+  max-height: 700px;
+  display: flex;
+  font-family: -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+  font-size: 14px;
+  background: #fff;
+  margin: 0px;
+}*/

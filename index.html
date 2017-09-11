@@ -3,31 +3,37 @@
   <head>
     <meta charset="utf-8">
     <style media="screen">
-      #canvas {
-        border: 1px solid black;
-        display: flex;
-        margin: auto;
-        background-image: url('assets/background.png');
-        background-size: 150%;
-        background-position: bottom;
-      }
+
 
     </style>
 
     <link href="https://fonts.googleapis.com/css?family=Bowlby+One|Slackey" rel="stylesheet">
 
 
-    <script src="./bundle.js" type="text/javascript">
-
-    </script>
+    <script src="./bundle.js" type="text/javascript"></script>
+    <link rel="stylesheet" href="./css/reset.css">
+    <link rel="stylesheet" href="./css/main.css">
   </head>
   <body>
 
     <canvas id="canvas" width="1035" height="700"></canvas>
 
-    <audio id="playingMusic" src="./assets/sounds/BackgroundMusic.mp3" loop="true">
-    <audio id="deadAudio" src="./assets/sounds/dead.mp3">
 
-    </audio>
+
+
+    <audio id="playingMusic" src="./assets/sounds/BackgroundMusic.mp3" loop="true"></audio>
+    <audio id="deadAudio" src="./assets/sounds/dead.mp3"></audio>
+    <audio id="modalMusic" src="./assets/sounds/modalMusic.mp3" loop="true"></audio>
+
+    <div class="show start-modal modal-back"></div>
+
+    <div class="show start-modal modal-contain-start">
+      <img class="show start-modal modal-start-message" src="./assets/startGame.png">
+    </div>
+
+
+
+
+
   </body>
 </html>

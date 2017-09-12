@@ -11,6 +11,7 @@
     <link rel="shortcut icon" type="image/png" href="./assets/favicon.png"/>
     <link rel="shortcut icon" type="image/png" href="http://eg.com/favicon.png"/>
 
+    <link rel="stylesheet" href="./css/fontAwesome/font-awesome.min.css">
 
     <script src="./bundle.js" type="text/javascript"></script>
     <link rel="stylesheet" href="./css/reset.css">
@@ -18,20 +19,34 @@
   </head>
   <body>
 
-    <canvas id="canvas" width="1035" height="700"></canvas>
+    <div class="contain">
+
+      <ul class="links">
+        <li>&copy Anthony Rondinone</li>
+        <li><a href="https://github.com/AnthonyRondinone" class="icon fa fa-github"><span class="label"></span></a></li>
+        <li><a href="https://www.linkedin.com/in/anthony-rondinone-a1111446/" class="icon fa fa-linkedin-square"><span class="label"></span></a></li>
+				<li><a href="https://www.instagram.com/anthony_rondinone/" class="icon fa fa-instagram"><span class="label"></span></a></li>
+				<li><a href="mailto:a.rondinone@gmail.com" class="icon fa fa-envelope"><span class="label"></span></a></li><br>
+      </ul>
+
+      <div class="">
+        <canvas id="canvas" width="1035" height="700"></canvas>
 
 
+        <audio id="playingMusic" src="./assets/sounds/BackgroundMusic.mp3" loop="true"></audio>
+        <audio id="deadAudio" src="./assets/sounds/dead.mp3"></audio>
+        <audio id="modalMusic" src="./assets/sounds/modalMusic.mp3" loop="true"></audio>
 
+        <div class="show start-modal modal-back"></div>
 
-    <audio id="playingMusic" src="./assets/sounds/BackgroundMusic.mp3" loop="true"></audio>
-    <audio id="deadAudio" src="./assets/sounds/dead.mp3"></audio>
-    <audio id="modalMusic" src="./assets/sounds/modalMusic.mp3" loop="true"></audio>
+        <div class="show start-modal modal-contain-start">
+          <img class="show start-modal modal-start-message" src="./assets/startGame.png">
+        </div>
+      </div>
 
-    <div class="show start-modal modal-back"></div>
-
-    <div class="show start-modal modal-contain-start">
-      <img class="show start-modal modal-start-message" src="./assets/startGame.png">
     </div>
+
+
 
 
 

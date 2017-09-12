@@ -5,4 +5,5 @@ html, body, div, span, h1, h2, h3, p, a, ul, li, audio, form, input, button, nav
   font: inherit;
   font-size: inherit;
   text-decoration: none;
+  color: inherit;
 }

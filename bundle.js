@@ -206,9 +206,9 @@ var Game = function () {
   }, {
     key: 'scoreDraw',
     value: function scoreDraw(ctx) {
-      ctx.font = '6px Slackey';
+      ctx.font = '60px Slackey';
       ctx.fillText('SCORE', 30, 100);
-      ctx.fillText(this.players[0].score, 330, 120);
+      ctx.fillText(this.players[0].score, 300, 100);
       ctx.fillStyle = 'white';
     }
   }, {
@@ -366,7 +366,6 @@ var GameView = function () {
       this.game.ghoulsOnParade();
 
       document.addEventListener('keydown', function (e) {
-        console.log(e.keyCode);
         switch (e.keyCode) {
           case 37:
             // left
@@ -379,6 +378,10 @@ var GameView = function () {
             _this.player.moveBool.right = true;
             _this.player.direction = "right";
             _this.player.animationSelector = 0;
+            break;
+          case 77:
+            _this.sound.mute();
+            // this.game.sound.mute();
             break;
         }
       });
@@ -424,16 +427,15 @@ var GameView = function () {
       this.game.step();
       this.game.draw(this.ctx);
       if (this.player.alive) {
-        this.sound.fx.nonHit.muted = false;
+
         requestAnimationFrame(this.animate.bind(this));
       }
       if (!this.player.alive) {
-
+        this.sound.fx.splatMan.play();
         this.sound.fx.deadAudio.volume = 0.4;
         this.sound.fx.deadAudio.play();
         this.sound.fx.BackgroundMusic.pause();
         this.sound.fx.BackgroundMusic.currentTime = 0;
-        this.sound.fx.nonHit.muted = true;
         this.game.endDraw(this.ctx);
         var scope = this;
         window.setTimeout(function () {
@@ -592,11 +594,11 @@ var Player = function (_Sprite) {
     value: function collision(ghoul) {
       if (this.action === "punch") {
         if (ghoul.image !== ghoul.altImage) {
+          this.score += 1;
           this.game.sound.fx.punch.volume = 0.5;
           this.game.sound.fx.punch.play();
           this.game.sound.fx.coin.volume = 0.5;
           this.game.sound.fx.coin.play();
-          this.score += 1;
           this.game.sound.fx.coin.currentTime = 0;
           this.game.sound.fx.punch.currentTime = 0;
         }
@@ -871,7 +873,8 @@ var Sound = function () {
       deadAudio: new Audio("./assets/sounds/dead.mp3"),
       nonHit: new Audio("./assets/sounds/nonHit.mp3"),
       punch: new Audio("./assets/sounds/punch.mp3"),
-      coin: new Audio("./assets/sounds/coin.mp3")
+      coin: new Audio("./assets/sounds/coin.mp3"),
+      splatMan: new Audio("./assets/sounds/splatMan.wav")
     };
   }
 

@@ -84,6 +84,10 @@ var _ghoul = __webpack_require__(5);
 
 var _ghoul2 = _interopRequireDefault(_ghoul);
 
+var _sound = __webpack_require__(8);
+
+var _sound2 = _interopRequireDefault(_sound);
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -94,6 +98,7 @@ var Game = function () {
 
     this.players = [];
     this.ghouls = [];
+    this.sound = new _sound2.default();
   }
 
   _createClass(Game, [{
@@ -154,7 +159,7 @@ var Game = function () {
         dy: Math.floor(Math.random() * (420 - 400) + 400),
         dWidth: 265 / 1.5,
         dHeight: 263 / 1.5,
-        speed: Math.floor(Math.random() * 2.5) + 1,
+        speed: Math.floor(Math.random() * 2) + 1,
         game: this
       };
 
@@ -201,8 +206,8 @@ var Game = function () {
   }, {
     key: 'scoreDraw',
     value: function scoreDraw(ctx) {
-      ctx.font = '60px Slackey';
-      ctx.fillText('SCORE', 50, 120);
+      ctx.font = '6px Slackey';
+      ctx.fillText('SCORE', 30, 100);
       ctx.fillText(this.players[0].score, 330, 120);
       ctx.fillStyle = 'white';
     }
@@ -210,7 +215,7 @@ var Game = function () {
     key: 'endDraw',
     value: function endDraw(ctx) {
       ctx.font = '95px Slackey';
-      ctx.fillText('Nice Try!', 300, 230);
+      ctx.fillText('Nice Try!', 200, 230);
       ctx.fillText(this.players[0].score, 500, 330);
       ctx.fillText('Ghouls', 360, 430);
       ctx.fillStyle = 'white';
@@ -343,18 +348,13 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
 var GameView = function () {
-  function GameView(game, ctx, playingMusic, deadAudio, modalMusic) {
+  function GameView(game, ctx, sound) {
     _classCallCheck(this, GameView);
 
     this.ctx = ctx;
     this.game = game;
-    // this.player = this.game.addPlayer();
-    // this.game.ghoulsOnParade();
-    // this.willRender = true;
-    // this.playingMusic = playingMusic;
-    // this.deadAudio = deadAudio;
-    // this.modalMusic = modalMusic;
     this.modal = "open";
+    this.sound = sound;
   }
 
   _createClass(GameView, [{
@@ -364,11 +364,9 @@ var GameView = function () {
 
       this.player = this.game.addPlayer();
       this.game.ghoulsOnParade();
-      this.playingMusic = playingMusic;
-      this.deadAudio = deadAudio;
-      this.modalMusic = modalMusic;
 
       document.addEventListener('keydown', function (e) {
+        console.log(e.keyCode);
         switch (e.keyCode) {
           case 37:
             // left
@@ -390,6 +388,8 @@ var GameView = function () {
           case 32:
             // punch
             _this.player.punch();
+            _this.sound.fx.nonHit.volume = 0.3;
+            _this.sound.fx.nonHit.play();
             break;
           case 115:
             _this.player.alive = true;
@@ -408,9 +408,14 @@ var GameView = function () {
             // right
             _this.player.moveBool.right = false;
             break;
+          case 32:
+            _this.sound.fx.nonHit.currentTime = 0;
+            break;
         }
       });
-      this.playingMusic.play();
+      this.sound.fx.BackgroundMusic.volume = 0.6;
+      this.sound.fx.BackgroundMusic.play();
+      this.sound.fx.BackgroundMusic.loop = true;
       requestAnimationFrame(this.animate.bind(this));
     }
   }, {
@@ -419,12 +424,16 @@ var GameView = function () {
       this.game.step();
       this.game.draw(this.ctx);
       if (this.player.alive) {
+        this.sound.fx.nonHit.muted = false;
         requestAnimationFrame(this.animate.bind(this));
       }
       if (!this.player.alive) {
 
-        this.deadAudio.play();
-        this.playingMusic.pause();
+        this.sound.fx.deadAudio.volume = 0.4;
+        this.sound.fx.deadAudio.play();
+        this.sound.fx.BackgroundMusic.pause();
+        this.sound.fx.BackgroundMusic.currentTime = 0;
+        this.sound.fx.nonHit.muted = true;
         this.game.endDraw(this.ctx);
         var scope = this;
         window.setTimeout(function () {
@@ -441,8 +450,9 @@ var GameView = function () {
       [].forEach.call(startModal, function (el) {
         el.className = el.className.replace('hidden', 'show');
       });
-      this.modalMusic.currentTime = 0;
-      scope.modalMusic.play();
+      scope.sound.fx.modalMusic.currentTime = 0;
+      scope.sound.fx.modalMusic.volume = 0.4;
+      scope.sound.fx.modalMusic.play();
     }
   }, {
     key: 'closeStartModal',
@@ -452,8 +462,7 @@ var GameView = function () {
       [].forEach.call(startModal, function (el) {
         el.className = el.className.replace('show', 'hidden');
       });
-      playingMusic.currentTime = 0;
-      modalMusic.pause();
+      this.sound.fx.modalMusic.pause();
     }
   }]);
 
@@ -484,13 +493,12 @@ document.addEventListener('DOMContentLoaded', function () {
   var canvas = document.getElementById('canvas');
   var ctx = canvas.getContext('2d');
 
-  var playingMusic = document.getElementById('playingMusic');
-  var deadAudio = document.getElementById('deadAudio');
-  var modalMusic = document.getElementById('modalMusic');
-
   var game = new _game2.default();
-  var gameView = new _game_view2.default(game, ctx);
-  modalMusic.play();
+  var gameView = new _game_view2.default(game, ctx, game.sound);
+
+  gameView.sound.fx.modalMusic.loop = true;
+  gameView.sound.fx.modalMusic.volume = 0.4;
+  gameView.sound.fx.modalMusic.play();
 
   window.startGame = function (e) {
     if (e.keyCode === 13) {
@@ -584,7 +592,13 @@ var Player = function (_Sprite) {
     value: function collision(ghoul) {
       if (this.action === "punch") {
         if (ghoul.image !== ghoul.altImage) {
+          this.game.sound.fx.punch.volume = 0.5;
+          this.game.sound.fx.punch.play();
+          this.game.sound.fx.coin.volume = 0.5;
+          this.game.sound.fx.coin.play();
           this.score += 1;
+          this.game.sound.fx.coin.currentTime = 0;
+          this.game.sound.fx.punch.currentTime = 0;
         }
         this.game.replace(ghoul);
         this.ghoulFall(ghoul);
@@ -830,6 +844,63 @@ var distance = exports.distance = function distance(playerXPos, ghoul) {
     return Math.abs(playerXPos + 170 - ghoul.dx);
   }
 };
+
+/***/ }),
+/* 7 */,
+/* 8 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+var Sound = function () {
+  function Sound() {
+    _classCallCheck(this, Sound);
+
+    this.fx = {
+      modalMusic: new Audio("./assets/sounds/modalMusic.mp3"),
+      BackgroundMusic: new Audio("./assets/sounds/BackgroundMusic.mp3"),
+      deadAudio: new Audio("./assets/sounds/dead.mp3"),
+      nonHit: new Audio("./assets/sounds/nonHit.mp3"),
+      punch: new Audio("./assets/sounds/punch.mp3"),
+      coin: new Audio("./assets/sounds/coin.mp3")
+    };
+  }
+
+  _createClass(Sound, [{
+    key: "mute",
+    value: function mute() {
+      this.fx.modalMusic.muted = true;
+      this.fx.BackgroundMusic.muted = true;
+      this.fx.deadAudio.muted = true;
+      this.fx.nonHit.muted = true;
+      this.fx.punch.muted = true;
+      this.fx.coin.muted = true;
+    }
+  }, {
+    key: "unMute",
+    value: function unMute() {
+      this.fx.modalMusic.muted = false;
+      this.fx.BackgroundMusic.muted = false;
+      this.fx.deadAudio.muted = false;
+      this.fx.nonHit.muted = false;
+      this.fx.punch.muted = false;
+      this.fx.coin.muted = false;
+    }
+  }]);
+
+  return Sound;
+}();
+
+exports.default = Sound;
 
 /***/ })
 /******/ ]);

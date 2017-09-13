@@ -389,15 +389,9 @@ var GameView = function () {
             _this.player.direction = "right";
             _this.player.animationSelector = 0;
             break;
-          case 77:
-            if (_this.game.mute === false) {
-              _this.sound.mute();
-              _this.game.mute = true;
-            } else if (_this.game.mute === true) {
-              _this.sound.unMute();
-              _this.game.mute = false;
-            }
-            break;
+          // case 77:
+          //
+          // break;
         }
       });
 
@@ -429,6 +423,23 @@ var GameView = function () {
             break;
         }
       });
+
+      document.getElementById('mute-off').addEventListener('click', this.controlSound.bind(this));
+    }
+  }, {
+    key: 'controlSound',
+    value: function controlSound() {
+      if (this.game.mute === false) {
+        this.sound.mute();
+        var muteStatus = document.getElementById('mute-off');
+        muteStatus.id = muteStatus.id.replace('mute-off', 'mute-on');
+        this.game.mute = true;
+      } else if (this.game.mute === true) {
+        this.sound.unMute();
+        var _muteStatus = document.getElementById('mute-on');
+        _muteStatus.id = _muteStatus.id.replace('mute-on', 'mute-off');
+        this.game.mute = false;
+      }
     }
   }, {
     key: 'animate',

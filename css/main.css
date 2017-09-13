@@ -84,3 +84,39 @@ body {
   font-size: 40px;
   box-shadow: 4px -5px 35px 0px rgba(0,0,0,0.75);
 }
+
+.game-contain {
+  z-index: 1100;
+  position: fixed;
+  width: 1000px;
+  height: 700px;
+  top: 45%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+.mute-contain {
+  color: white;
+}
+
+#mute-off {
+
+  position: fixed;
+  top: 5%;
+  left: 95%;
+  transform: translate(-50%, -50%);
+  background-image: url('../assets/soundOn.png');
+  width: 25px;
+  height: 25px;
+}
+
+
+#mute-on {
+  position: fixed;
+  top: 5%;
+  left: 95%;
+  transform: translate(-50%, -50%);
+  background-image: url('../assets/soundOff.png');
+  width: 25px;
+  height: 25px;
+}

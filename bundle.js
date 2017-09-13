@@ -389,9 +389,6 @@ var GameView = function () {
             _this.player.direction = "right";
             _this.player.animationSelector = 0;
             break;
-          // case 77:
-          //
-          // break;
         }
       });
 

@@ -1,44 +1,28 @@
-# JOLLY-night
+## Ghoul-Alley
 
-## Background
+### Live (Working) Demo
 
-JOLLY-night is a game where a member of the band JOLLY is trapped in an alley and the only way to survive is by dodging ghouls.
-
-
-## Functionality & MVP
-
-In JOLLY-night, users will be able to:
-
-- [ ] Start game
-- [ ] Jump over or punch ghouls to stay alive
-- [ ] Keep score of how many ghouls they've punched to stay alive
-
-## Wireframes
-
-This game will consist of a single screen with game board, score counter and game controls.  Game controls will include Start, arrow key directions, jump and punch button.
+[Ghoul-Alley](https://anthonyrondinone.github.io/Ghoul-Alley/)
 
 
-![wireframes](assets/wireframe.png)
+### Background
 
-![start](assets/start.png)
+Anthony steps into an alley, not knowing that it is full of Ghouls.  The object of the game is to stay alive as long as possible and get a point for each ghoul you avoid.  
 
-![end](assets/end.png)
+![Ghoul_Alley Demo](https://media.giphy.com/media/9IFAneTjwemIg/giphy.gif)
 
-## Architecture and Technologies
+### Functionality & MVP  
+
+Ghoul-Alley will allow users to:
+
+- [ ] Walk horizontally to dodge ghouls
+- [ ] Punch ghouls once they get too close to stay alive
+- [ ] See animated sprite which I created an original, custom sprite sheet
+- [ ] Mute and unMute sounds
+- [ ] See ghouls fly up and change once they are hit
 
 
-This project will be implemented with the following technologies:
+### Technical Implementation
 
-- `JavaScript` for game logic
-- `HTML5 Canvas` for rendering
-
-
-## Implementation Timeline
-
-**Day 1**: Set up Node modules and basic entry files.  Get background rendering with canvas and research iterating through image files for animation.
-
-**Day 2**: Key control logic and rendering character movement and ghouls coming at the character
-
-**Day 3**:  Collision detection to determine if the game is over or user wins a point
-
-**Day 4**: Polish game, create modals and NavLinks
+I utilize JavaScript, HTML5 Canvas and CSS. Sprite sheet animation is achieved through a combination of Canvas `requestAnimationFrame`, and JavaScript; determining how much of the sprit sheet to render and which section of the sprite sheet to render resulting in character movement.  Key control with `eventListeners` also determine which sprites should be iterated through resulting in the correct movements and responsive gameplay for users through VanillaJS.
+Collision detection is achieved through calculating distance between ghoul objects and player.  Taking advantage of conditional logic, collision detection works on both sides of the player and well as ghouls coming from both directions.  The player either dies if he does not punch or lives and gets a point if he punches the ghouls.

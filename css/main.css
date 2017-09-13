@@ -97,26 +97,23 @@ body {
 
 .mute-contain {
   color: white;
-}
-
-#mute-off {
-
   position: fixed;
   top: 5%;
   left: 95%;
   transform: translate(-50%, -50%);
+}
+
+#mute-off {
   background-image: url('../assets/soundOn.png');
   width: 25px;
   height: 25px;
+  box-shadow: 10px 0px 40px 0px rgba(100,100,100,0.75);
 }
 
 
 #mute-on {
-  position: fixed;
-  top: 5%;
-  left: 95%;
-  transform: translate(-50%, -50%);
   background-image: url('../assets/soundOff.png');
   width: 25px;
   height: 25px;
+  box-shadow: 10px 0px 40px 0px rgba(207,23,23,0.5);
 }

@@ -99,6 +99,7 @@ var Game = function () {
     this.players = [];
     this.ghouls = [];
     this.sound = new _sound2.default();
+    this.mute = false;
   }
 
   _createClass(Game, [{
@@ -355,15 +356,24 @@ var GameView = function () {
     this.game = game;
     this.modal = "open";
     this.sound = sound;
+    this.addHandlers();
   }
 
   _createClass(GameView, [{
     key: 'start',
     value: function start() {
-      var _this = this;
-
       this.player = this.game.addPlayer();
       this.game.ghoulsOnParade();
+
+      this.sound.fx.BackgroundMusic.volume = 0.6;
+      this.sound.fx.BackgroundMusic.play();
+      this.sound.fx.BackgroundMusic.loop = true;
+      requestAnimationFrame(this.animate.bind(this));
+    }
+  }, {
+    key: 'addHandlers',
+    value: function addHandlers() {
+      var _this = this;
 
       document.addEventListener('keydown', function (e) {
         switch (e.keyCode) {
@@ -380,8 +390,13 @@ var GameView = function () {
             _this.player.animationSelector = 0;
             break;
           case 77:
-            _this.sound.mute();
-            // this.game.sound.mute();
+            if (_this.game.mute === false) {
+              _this.sound.mute();
+              _this.game.mute = true;
+            } else if (_this.game.mute === true) {
+              _this.sound.unMute();
+              _this.game.mute = false;
+            }
             break;
         }
       });
@@ -391,8 +406,6 @@ var GameView = function () {
           case 32:
             // punch
             _this.player.punch();
-            _this.sound.fx.nonHit.volume = 0.3;
-            _this.sound.fx.nonHit.play();
             break;
           case 115:
             _this.player.alive = true;
@@ -416,10 +429,6 @@ var GameView = function () {
             break;
         }
       });
-      this.sound.fx.BackgroundMusic.volume = 0.6;
-      this.sound.fx.BackgroundMusic.play();
-      this.sound.fx.BackgroundMusic.loop = true;
-      requestAnimationFrame(this.animate.bind(this));
     }
   }, {
     key: 'animate',
@@ -595,12 +604,14 @@ var Player = function (_Sprite) {
       if (this.action === "punch") {
         if (ghoul.image !== ghoul.altImage) {
           this.score += 1;
-          this.game.sound.fx.punch.volume = 0.5;
-          this.game.sound.fx.punch.play();
-          this.game.sound.fx.coin.volume = 0.5;
-          this.game.sound.fx.coin.play();
-          this.game.sound.fx.coin.currentTime = 0;
-          this.game.sound.fx.punch.currentTime = 0;
+          if (this.game.mute === false) {
+            this.game.sound.fx.punch.volume = 0.5;
+            this.game.sound.fx.punch.play();
+            this.game.sound.fx.coin.volume = 0.5;
+            this.game.sound.fx.coin.play();
+            this.game.sound.fx.coin.currentTime = 0;
+            this.game.sound.fx.punch.currentTime = 0;
+          }
         }
         this.game.replace(ghoul);
         this.ghoulFall(ghoul);
@@ -631,6 +642,11 @@ var Player = function (_Sprite) {
   }, {
     key: 'punch',
     value: function punch() {
+      if (this.alive && this.game.mute === false) {
+        this.game.sound.fx.nonHit.volume = 0.3;
+        this.game.sound.fx.nonHit.play();
+        this.game.sound.fx.nonHit.currentTime = 0;
+      }
       if (this.action === null) {
         this.action = "punch";
         if (this.animationSelector !== 2 && this.animationSelector !== 6) {}
@@ -887,6 +903,7 @@ var Sound = function () {
       this.fx.nonHit.muted = true;
       this.fx.punch.muted = true;
       this.fx.coin.muted = true;
+      this.fx.splatMan.muted = true;
     }
   }, {
     key: "unMute",
@@ -897,6 +914,7 @@ var Sound = function () {
       this.fx.nonHit.muted = false;
       this.fx.punch.muted = false;
       this.fx.coin.muted = false;
+      this.fx.splatMan.muted = false;
     }
   }]);
 

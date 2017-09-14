@@ -84,22 +84,21 @@ var _ghoul = __webpack_require__(5);
 
 var _ghoul2 = _interopRequireDefault(_ghoul);
 
-var _sound = __webpack_require__(7);
-
-var _sound2 = _interopRequireDefault(_sound);
-
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
+// import Sound from './sound';
+
+
 var Game = function () {
-  function Game() {
+  function Game(sound) {
     _classCallCheck(this, Game);
 
     this.players = [];
     this.ghouls = [];
-    this.sound = new _sound2.default();
-    this.mute = false;
+    this.sound = sound;
+    // this.mute = false;
   }
 
   _createClass(Game, [{
@@ -432,16 +431,16 @@ var GameView = function () {
     key: 'controlSound',
     value: function controlSound() {
       window.mute = this.sound.mute;
-      if (this.game.mute === false) {
-        this.game.mute = true;
+      if (this.sound.muted === false) {
+        this.sound.muted = true;
         this.sound.mute();
         var muteStatus = document.getElementById('mute-off');
         muteStatus.id = muteStatus.id.replace('mute-off', 'mute-on');
-      } else if (this.game.mute === true) {
+      } else if (this.sound.muted === true) {
         this.sound.unMute();
         var _muteStatus = document.getElementById('mute-on');
         _muteStatus.id = _muteStatus.id.replace('mute-on', 'mute-off');
-        this.game.mute = false;
+        this.sound.muted = false;
       }
     }
   }, {
@@ -523,7 +522,7 @@ document.addEventListener('DOMContentLoaded', function () {
   var ctx = canvas.getContext('2d');
 
   var sound = new _sound2.default();
-  var game = new _game2.default();
+  var game = new _game2.default(sound);
   var gameView = new _game_view2.default(game, ctx, sound);
 
   gameView.sound.fx.modalMusic.loop = true;
@@ -532,7 +531,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
   window.startGame = function (e) {
     if (e.keyCode === 13) {
-      var newGame = new _game2.default();
+      var newGame = new _game2.default(sound);
       gameView.game = newGame;
       gameView.closeStartModal();
       gameView.start();
@@ -623,14 +622,13 @@ var Player = function (_Sprite) {
       if (this.action === "punch") {
         if (ghoul.image !== ghoul.altImage) {
           this.score += 1;
-          if (this.game.mute === false) {
-            this.game.sound.fx.punch.volume = 0.5;
-            this.game.sound.fx.punch.play();
-            this.game.sound.fx.coin.volume = 0.5;
-            this.game.sound.fx.coin.play();
-            this.game.sound.fx.coin.currentTime = 0;
-            this.game.sound.fx.punch.currentTime = 0;
-          }
+
+          this.game.sound.fx.punch.volume = 0.5;
+          this.game.sound.fx.punch.play();
+          this.game.sound.fx.coin.volume = 0.5;
+          this.game.sound.fx.coin.play();
+          this.game.sound.fx.coin.currentTime = 0;
+          this.game.sound.fx.punch.currentTime = 0;
         }
         this.game.replace(ghoul);
         this.ghoulFall(ghoul);

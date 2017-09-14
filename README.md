@@ -24,5 +24,10 @@ Ghoul-Alley will allow users to:
 
 ### Technical Implementation
 
-I utilize JavaScript, HTML5 Canvas and CSS. Sprite sheet animation is achieved through a combination of Canvas `requestAnimationFrame`, and JavaScript; determining how much of the sprit sheet to render and which section of the sprite sheet to render resulting in character movement.  Key control with `eventListeners` also determine which sprites should be iterated through resulting in the correct movements and responsive gameplay for users through VanillaJS.
+I utilize JavaScript, HTML5 Canvas and CSS.Sprite sheet animation is achieved through a combination of Canvas `requestAnimationFrame`, and JavaScript; determining how much of the sprit sheet to render and which section of the sprite sheet to render resulting in character animation.  
+
+![player-animate](assets/readMeAnimateCode.png)
+
+
+Key control with `eventListeners` also determine which sprites should be iterated through resulting in the correct movements and responsive gameplay for users through VanillaJS.
 Collision detection is achieved through calculating distance between ghoul objects and player.  Taking advantage of conditional logic, collision detection works on both sides of the player and well as ghouls coming from both directions.  The player either dies if he does not punch or lives and gets a point if he punches the ghouls.

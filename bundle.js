@@ -623,7 +623,6 @@ var Player = function (_Sprite) {
       if (this.action === "punch") {
         if (ghoul.image !== ghoul.altImage) {
           this.score += 1;
-          // debugger
           if (this.game.mute === false) {
             this.game.sound.fx.punch.volume = 0.5;
             this.game.sound.fx.punch.play();

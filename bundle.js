@@ -84,7 +84,7 @@ var _ghoul = __webpack_require__(5);
 
 var _ghoul2 = _interopRequireDefault(_ghoul);
 
-var _sound = __webpack_require__(8);
+var _sound = __webpack_require__(7);
 
 var _sound2 = _interopRequireDefault(_sound);
 
@@ -397,6 +397,11 @@ var GameView = function () {
           case 32:
             // punch
             _this.player.punch();
+            if (_this.player.alive) {
+              _this.sound.fx.nonHit.volume = 0.3;
+              _this.sound.fx.nonHit.play();
+              _this.sound.fx.nonHit.currentTime = 0;
+            }
             break;
           case 115:
             _this.player.alive = true;
@@ -426,11 +431,12 @@ var GameView = function () {
   }, {
     key: 'controlSound',
     value: function controlSound() {
+      window.mute = this.sound.mute;
       if (this.game.mute === false) {
+        this.game.mute = true;
         this.sound.mute();
         var muteStatus = document.getElementById('mute-off');
         muteStatus.id = muteStatus.id.replace('mute-off', 'mute-on');
-        this.game.mute = true;
       } else if (this.game.mute === true) {
         this.sound.unMute();
         var _muteStatus = document.getElementById('mute-on');
@@ -505,6 +511,10 @@ var _game_view = __webpack_require__(2);
 
 var _game_view2 = _interopRequireDefault(_game_view);
 
+var _sound = __webpack_require__(7);
+
+var _sound2 = _interopRequireDefault(_sound);
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 document.addEventListener('DOMContentLoaded', function () {
@@ -512,8 +522,9 @@ document.addEventListener('DOMContentLoaded', function () {
   var canvas = document.getElementById('canvas');
   var ctx = canvas.getContext('2d');
 
+  var sound = new _sound2.default();
   var game = new _game2.default();
-  var gameView = new _game_view2.default(game, ctx, game.sound);
+  var gameView = new _game_view2.default(game, ctx, sound);
 
   gameView.sound.fx.modalMusic.loop = true;
   gameView.sound.fx.modalMusic.volume = 0.4;
@@ -612,6 +623,7 @@ var Player = function (_Sprite) {
       if (this.action === "punch") {
         if (ghoul.image !== ghoul.altImage) {
           this.score += 1;
+          // debugger
           if (this.game.mute === false) {
             this.game.sound.fx.punch.volume = 0.5;
             this.game.sound.fx.punch.play();
@@ -650,11 +662,6 @@ var Player = function (_Sprite) {
   }, {
     key: 'punch',
     value: function punch() {
-      if (this.alive && this.game.mute === false) {
-        this.game.sound.fx.nonHit.volume = 0.3;
-        this.game.sound.fx.nonHit.play();
-        this.game.sound.fx.nonHit.currentTime = 0;
-      }
       if (this.action === null) {
         this.action = "punch";
         if (this.animationSelector !== 2 && this.animationSelector !== 6) {}
@@ -872,8 +879,7 @@ var distance = exports.distance = function distance(playerXPos, ghoul) {
 };
 
 /***/ }),
-/* 7 */,
-/* 8 */
+/* 7 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -900,6 +906,7 @@ var Sound = function () {
       coin: new Audio("./assets/sounds/coin.mp3"),
       splatMan: new Audio("./assets/sounds/splatMan.wav")
     };
+    this.muted = false;
   }
 
   _createClass(Sound, [{

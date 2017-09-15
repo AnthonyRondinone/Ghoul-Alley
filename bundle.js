@@ -458,57 +458,55 @@ var GameView = function () {
         this.sound.fx.deadAudio.play();
         this.sound.fx.BackgroundMusic.pause();
         this.sound.fx.BackgroundMusic.currentTime = 0;
-        this.game.endDraw(this.ctx);
-        var scope = this;
-        window.setTimeout(function () {
-          scope.callStartModal(scope);
-          document.addEventListener('keypress', window.startGame);
-        }, 3400);
-        // document.addEventListener('keypress', this.logScore.bind(this));
+        // this.game.endDraw(this.ctx);
+        // const scope = this;
+        // window.setTimeout(() => {
+        //   scope.callStartModal(scope);
+        //   document.addEventListener('keypress', window.startGame);
+        // }, 3400);
+        document.addEventListener('keypress', this.logScore.bind(this));
       }
     }
+  }, {
+    key: 'logScore',
+    value: function logScore(e) {
+      if (e.keyCode === 13) {
+        var input = document.getElementById('initials');
+        var initials = input.value;
+        var score = this.game.players[0].score;
+        var ref = this.database.ref('scores/');
 
-    // logScore(e) {
-    //   if (e.keyCode === 13) {
-    //     const input = document.getElementById('initials');
-    //     const initials = input.value;
-    //     const score = this.game.players[0].score;
-    //     let ref = this.database.ref('scores/');
-    //
-    //     let data = {
-    //       userInitials: initials,
-    //       userScore: score
-    //     };
-    //     ref.push(data);
-    //
-    //     // this.database.ref().child('scores/').on("child_added", snap => {
-    //     //   debugger
-    //     //   let initials = snap.child('userInitials').val();
-    //     //   let score = snap.child('userScore').val();
-    //     //   alert(initials);
-    //     //   alert(score);
-    //     // });
-    //
-    //     // this.database.ref().child('scores/').on("child_added", snap => {
-    //     //     let initials = snap.child('userInitials').val();
-    //     //     let score = snap.child('userScore').val();
-    //     //     debugger
-    //     //     console.log(score);
-    //     // });
-    //
-    //     const highscores = [];
-    //     this.database.ref().child('scores/').orderByChild('userScore').limitToLast(5).on("child_added", (snap) => {
-    //       let scores = snap.val();
-    //
-    //       let keys = Object.values(scores);
-    //       highscores.push(keys);
-    //       // debugger
-    //     });
-    //     debugger
-    //     console.log(highscores);
-    //
-    //   }
-    // }
+        var data = {
+          userInitials: initials,
+          userScore: score
+        };
+        ref.push(data);
+
+        // this.database.ref().child('scores/').on("child_added", snap => {
+        //   debugger
+        //   let initials = snap.child('userInitials').val();
+        //   let score = snap.child('userScore').val();
+        //   alert(initials);
+        //   alert(score);
+        // });
+
+        // this.database.ref().child('scores/').on("child_added", snap => {
+        //     let initials = snap.child('userInitials').val();
+        //     let score = snap.child('userScore').val();
+        //     debugger
+        //     console.log(score);
+        // });
+
+        var highscores = void 0;
+        this.database.ref().child('scores/').orderByChild('userScore').limitToLast(5).once("value").then(function (snap) {
+          var scores = snap.val();
+
+          highscores = Object.values(scores);
+          debugger;
+        });
+        debugger;
+      }
+    }
 
     // gotData(data) {
     //   debugger

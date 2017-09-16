@@ -356,6 +356,7 @@ var GameView = function () {
     this.sound = sound;
     this.database = firebase.database();
     this.addHandlers();
+    this.printScores = this.printScores.bind(this);
   }
 
   _createClass(GameView, [{
@@ -482,48 +483,51 @@ var GameView = function () {
         };
         ref.push(data);
 
-        // this.database.ref().child('scores/').on("child_added", snap => {
+        var newScores = this.getScores();
+        // this.database.ref('scores/').orderByChild('userScore').limitToLast(5).once("value")
+        //   .then((snap) => {
+        //     let scores = snap.val();
+        //
+        //     const highscores = Object.values(scores);
+        //     let sortedScores = highscores.sort(function(a,b) {return (a.userScore < b.userScore) ? 1 : ((b.userScore < a.userScore) ? -1 : 0);} );
+        //   if (sortedScores) {
+        //     return resolve();
+        //   } else {
+        //     return reject();
+        //   }
         //   debugger
-        //   let initials = snap.child('userInitials').val();
-        //   let score = snap.child('userScore').val();
-        //   alert(initials);
-        //   alert(score);
         // });
-
-        // this.database.ref().child('scores/').on("child_added", snap => {
-        //     let initials = snap.child('userInitials').val();
-        //     let score = snap.child('userScore').val();
-        //     debugger
-        //     console.log(score);
-        // });
-
-        var highscores = void 0;
-        this.database.ref().child('scores/').orderByChild('userScore').limitToLast(5).once("value").then(function (snap) {
-          var scores = snap.val();
-
-          highscores = Object.values(scores);
-          debugger;
-        });
-        debugger;
+        // debugger
       }
     }
+  }, {
+    key: 'getScores',
+    value: function getScores() {
+      var _this2 = this;
 
-    // gotData(data) {
-    //   debugger
-    //   let scores = data.val();
-    //
-    //   let keys = Object.values(scores);
-    //   console.log(keys);
+      return this.database.ref('scores/').orderByChild('userScore').limitToLast(5).on("value", function (snap) {
+        _this2.printScores(snap);
+      });
+      // (snap) => {
+      //   let scores = snap.val();
+      //
+      //   const highscores = Object.values(scores);
+      //   let sortedScores = highscores.sort(function(a,b) {return (a.userScore < b.userScore) ? 1 : ((b.userScore < a.userScore) ? -1 : 0);} );
+      //   this.printScores(sortedScores);
+      // debugger
 
-    // console.log(keys);
-    // for (let i = 0; i < keys.length; i++) {
-    //   let initials = scores[userInitials];
-    //   let score = scores[userScore];
-    //   console.log(initials, score);
-    // }
-    // console.log(data);
-    // }
+    }
+  }, {
+    key: 'printScores',
+    value: function printScores(snap) {
+      var scores = snap.val();
 
+      var highscores = Object.values(scores);
+      var sortedScores = highscores.sort(function (a, b) {
+        return a.userScore < b.userScore ? 1 : b.userScore < a.userScore ? -1 : 0;
+      });
+      alert(sortedScores);
+    }
   }, {
     key: 'callStartModal',
     value: function callStartModal(scope) {

@@ -92,7 +92,7 @@ body {
 
 .links {
   font-family: sans-serif;
-  z-index: 1010;
+  z-index: 1200;
   display: flex;
   flex-direction: row;
   justify-content: space-around;

@@ -356,7 +356,8 @@ var GameView = function () {
     this.sound = sound;
     this.database = firebase.database();
     this.addHandlers();
-    this.printScores = this.printScores.bind(this);
+    // this.printScores = this.printScores.bind(this);
+    this.logScore = this.logScore.bind(this);
   }
 
   _createClass(GameView, [{
@@ -465,7 +466,7 @@ var GameView = function () {
         //   scope.callStartModal(scope);
         //   document.addEventListener('keypress', window.startGame);
         // }, 3400);
-        document.addEventListener('keypress', this.logScore.bind(this));
+        document.addEventListener('keypress', this.logScore);
       }
     }
   }, {
@@ -483,50 +484,31 @@ var GameView = function () {
         };
         ref.push(data);
 
-        var newScores = this.getScores();
-        // this.database.ref('scores/').orderByChild('userScore').limitToLast(5).once("value")
-        //   .then((snap) => {
-        //     let scores = snap.val();
-        //
-        //     const highscores = Object.values(scores);
-        //     let sortedScores = highscores.sort(function(a,b) {return (a.userScore < b.userScore) ? 1 : ((b.userScore < a.userScore) ? -1 : 0);} );
-        //   if (sortedScores) {
-        //     return resolve();
-        //   } else {
-        //     return reject();
-        //   }
-        //   debugger
-        // });
-        // debugger
+        this.retrieveScores(data);
+        debugger;
       }
     }
   }, {
-    key: 'getScores',
-    value: function getScores() {
-      var _this2 = this;
-
+    key: 'retrieveScores',
+    value: function retrieveScores(data) {
       return this.database.ref('scores/').orderByChild('userScore').limitToLast(5).on("value", function (snap) {
-        _this2.printScores(snap);
-      });
-      // (snap) => {
-      //   let scores = snap.val();
-      //
-      //   const highscores = Object.values(scores);
-      //   let sortedScores = highscores.sort(function(a,b) {return (a.userScore < b.userScore) ? 1 : ((b.userScore < a.userScore) ? -1 : 0);} );
-      //   this.printScores(sortedScores);
-      // debugger
+        var scores = snap.val();
 
-    }
-  }, {
-    key: 'printScores',
-    value: function printScores(snap) {
-      var scores = snap.val();
+        var highscores = Object.values(scores);
+        var sortedScores = highscores.sort(function (a, b) {
+          return a.userScore < b.userScore ? 1 : b.userScore < a.userScore ? -1 : 0;
+        });
 
-      var highscores = Object.values(scores);
-      var sortedScores = highscores.sort(function (a, b) {
-        return a.userScore < b.userScore ? 1 : b.userScore < a.userScore ? -1 : 0;
+        var parentUl = document.getElementById('score-contain');
+        for (var i = 0; i < sortedScores.length; i++) {
+          var highScore = sortedScores[i];
+          var li = document.createElement('li');
+          li.innerHTML = highScore.userScore + ": " + highScore.userInitials;
+          parentUl.appendChild(li);
+          debugger;
+        }
       });
-      alert(sortedScores);
+      debugger;
     }
   }, {
     key: 'callStartModal',

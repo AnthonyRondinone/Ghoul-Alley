@@ -141,11 +141,7 @@ body {
 
 .links {
   font-family: sans-serif;
-<<<<<<< HEAD
-  z-index: 1200;
-=======
   z-index: 1500;
->>>>>>> highScore
   display: flex;
   flex-direction: row;
   justify-content: space-around;

@@ -95,6 +95,12 @@ body {
   background-image: url('../assets/modalBack.png');
 }
 
+.re-try {
+  opacity: .8;
+  margin-top: 16px;
+  font-size: 30px;
+}
+
 .score-text {
   opacity: .8;
   z-index: 1200;

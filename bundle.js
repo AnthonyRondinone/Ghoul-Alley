@@ -448,6 +448,8 @@ var GameView = function () {
   }, {
     key: 'animate',
     value: function animate() {
+      var _this2 = this;
+
       this.game.step();
       this.game.draw(this.ctx);
       if (this.player.alive) {
@@ -460,37 +462,40 @@ var GameView = function () {
         this.sound.fx.deadAudio.play();
         this.sound.fx.BackgroundMusic.pause();
         this.sound.fx.BackgroundMusic.currentTime = 0;
+        this.sound.fx.modalMusic.currentTime = 0;
         // this.game.endDraw(this.ctx);
         // const scope = this;
-        // window.setTimeout(() => {
-        //   scope.callStartModal(scope);
-        //   document.addEventListener('keypress', window.startGame);
-        // }, 3400);
-        document.addEventListener('keypress', this.logScore);
+        window.setTimeout(function () {
+          _this2.sound.fx.modalMusic.play();
+        }, 3400);
+
+        this.callInitialModal();
+        document.querySelector('.high-form').addEventListener('submit', this.logScore);
       }
     }
   }, {
     key: 'logScore',
     value: function logScore(e) {
-      if (e.keyCode === 13) {
-        var input = document.getElementById('initials');
-        var initials = input.value;
-        var score = this.game.players[0].score;
-        var ref = this.database.ref('scores/');
+      e.preventDefault();
+      var input = document.getElementById('initials');
+      var initials = input.value;
+      var score = this.game.players[0].score;
+      var ref = this.database.ref('scores/');
 
-        var data = {
-          userInitials: initials,
-          userScore: score
-        };
-        ref.push(data);
+      var data = {
+        userInitials: initials,
+        userScore: score
+      };
+      ref.push(data);
 
-        this.retrieveScores(data);
-        debugger;
-      }
+      this.closeInitialModal();
+      this.retrieveScores();
     }
   }, {
     key: 'retrieveScores',
-    value: function retrieveScores(data) {
+    value: function retrieveScores() {
+      var _this3 = this;
+
       return this.database.ref('scores/').orderByChild('userScore').limitToLast(5).on("value", function (snap) {
         var scores = snap.val();
 
@@ -500,15 +505,61 @@ var GameView = function () {
         });
 
         var parentUl = document.getElementById('score-contain');
-        for (var i = 0; i < sortedScores.length; i++) {
-          var highScore = sortedScores[i];
-          var li = document.createElement('li');
-          li.innerHTML = highScore.userScore + ": " + highScore.userInitials;
-          parentUl.appendChild(li);
-          debugger;
+        var list = document.querySelectorAll('.score-listing');
+        for (var i = 0; i < list.length; i++) {
+          list[i].remove();
         }
+
+        for (var _i = 0; _i < sortedScores.length; _i++) {
+          var highScore = sortedScores[_i];
+          var li = document.createElement('li');
+          li.innerHTML = highScore.userInitials + ": " + highScore.userScore;
+          li.className = 'score-listing';
+          parentUl.appendChild(li);
+        }
+        _this3.callScoreListModal();
+        document.addEventListener('keypress', window.reStartGame);
       });
-      debugger;
+    }
+  }, {
+    key: 'callScoreListModal',
+    value: function callScoreListModal() {
+      this.modal = "open";
+      var scoreListModal = document.getElementsByClassName('score-list');
+      [].forEach.call(scoreListModal, function (el) {
+        el.className = el.className.replace('hidden-score-list', 'show-score-list');
+      });
+    }
+  }, {
+    key: 'closeScoreListModal',
+    value: function closeScoreListModal() {
+      this.modal = "close";
+      var scoreListModal = document.getElementsByClassName('score-list');
+      [].forEach.call(scoreListModal, function (el) {
+        el.className = el.className.replace('show-score-list', 'hidden-score-list');
+      });
+      this.sound.fx.modalMusic.pause();
+    }
+  }, {
+    key: 'callInitialModal',
+    value: function callInitialModal() {
+      this.modal = "open";
+      var input = document.getElementById('initials');
+      input.value = "";
+      input.placeholder = "enter initials";
+      var initialModal = document.getElementsByClassName('enter-initials');
+      [].forEach.call(initialModal, function (el) {
+        el.className = el.className.replace('hidden-high-score', 'show-high-score');
+      });
+    }
+  }, {
+    key: 'closeInitialModal',
+    value: function closeInitialModal() {
+      this.modal = "close";
+      var initialModal = document.getElementsByClassName('enter-initials');
+      [].forEach.call(initialModal, function (el) {
+        el.className = el.className.replace('show-high-score', 'hidden-high-score');
+      });
     }
   }, {
     key: 'callStartModal',
@@ -580,6 +631,16 @@ document.addEventListener('DOMContentLoaded', function () {
       gameView.closeStartModal();
       gameView.start();
       document.removeEventListener('keypress', window.startGame);
+    }
+  };
+
+  window.reStartGame = function (e) {
+    if (e.keyCode === 13) {
+      var newGame = new _game2.default(sound);
+      gameView.game = newGame;
+      gameView.closeScoreListModal();
+      gameView.start();
+      document.removeEventListener('keypress', window.reStartGame);
     }
   };
 

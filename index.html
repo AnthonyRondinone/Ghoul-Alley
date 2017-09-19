@@ -58,29 +58,31 @@
 
 
 
-        <!-- <div class="show start-modal modal-back"></div> -->
+        <div class="show start-modal modal-back"></div>
 
-        <!-- <div class="show start-modal modal-contain-start">
+        <div class="show start-modal modal-contain-start">
           <img class="show start-modal modal-start-message" src="./assets/startGame.png">
         </div>
-      </div> -->
+      </div>
 
-      <div class="hide-high-score modal-back"></div>
+      <div class="hidden-high-score modal-back enter-initials"></div>
 
-        <div class="hide-high-score high-score-contain">
+        <div class="hidden-high-score high-score-contain enter-initials">
           <div class="score-text">
             <h1>Nice try!</h1>
-            <h2>Record your high score of:</h2>
-            <h1>SCORE</h1>
-            <ul id="score-contain">
-
-            </ul>
+            <h2>Enter your initials</h2>
+            <h1>to log your score</h1>
           </div>
-          <form class="hide-high-score high-form" action="index.html" method="post">
-            <input id="initials" class="username-input" type="text" name="username" value="" placeholder="enter initials">
+          <form class="hidden-high-score high-form enter-initials" action="index.html" method="post">
+            <input id="initials" class="username-input" type="text" name="username" value="" placeholder="enter initials" onfocus="this.placeholder=''">
           </form>
         </div>
 
+        <div class="hidden-score-list modal-back score-list"></div>
+
+        <ul class="hidden-score-list high-score-contain score-list" id="score-contain">
+
+        </ul>
 
     </div>
 

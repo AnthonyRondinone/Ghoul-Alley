@@ -356,6 +356,8 @@ var GameView = function () {
     this.sound = sound;
     this.database = firebase.database();
     this.addHandlers();
+    // this.printScores = this.printScores.bind(this);
+    this.logScore = this.logScore.bind(this);
   }
 
   _createClass(GameView, [{
@@ -446,6 +448,8 @@ var GameView = function () {
   }, {
     key: 'animate',
     value: function animate() {
+      var _this2 = this;
+
       this.game.step();
       this.game.draw(this.ctx);
       if (this.player.alive) {
@@ -458,74 +462,105 @@ var GameView = function () {
         this.sound.fx.deadAudio.play();
         this.sound.fx.BackgroundMusic.pause();
         this.sound.fx.BackgroundMusic.currentTime = 0;
-        this.game.endDraw(this.ctx);
-        var scope = this;
+        this.sound.fx.modalMusic.currentTime = 0;
+        // this.game.endDraw(this.ctx);
+        // const scope = this;
         window.setTimeout(function () {
-          scope.callStartModal(scope);
-          document.addEventListener('keypress', window.startGame);
+          _this2.sound.fx.modalMusic.play();
         }, 3400);
-        // document.addEventListener('keypress', this.logScore.bind(this));
+
+        this.callInitialModal();
+        document.querySelector('.high-form').addEventListener('submit', this.logScore);
       }
     }
+  }, {
+    key: 'logScore',
+    value: function logScore(e) {
+      e.preventDefault();
+      var input = document.getElementById('initials');
+      var initials = input.value;
+      var score = this.game.players[0].score;
+      var ref = this.database.ref('scores/');
 
-    // logScore(e) {
-    //   if (e.keyCode === 13) {
-    //     const input = document.getElementById('initials');
-    //     const initials = input.value;
-    //     const score = this.game.players[0].score;
-    //     let ref = this.database.ref('scores/');
-    //
-    //     let data = {
-    //       userInitials: initials,
-    //       userScore: score
-    //     };
-    //     ref.push(data);
-    //
-    //     // this.database.ref().child('scores/').on("child_added", snap => {
-    //     //   debugger
-    //     //   let initials = snap.child('userInitials').val();
-    //     //   let score = snap.child('userScore').val();
-    //     //   alert(initials);
-    //     //   alert(score);
-    //     // });
-    //
-    //     // this.database.ref().child('scores/').on("child_added", snap => {
-    //     //     let initials = snap.child('userInitials').val();
-    //     //     let score = snap.child('userScore').val();
-    //     //     debugger
-    //     //     console.log(score);
-    //     // });
-    //
-    //     const highscores = [];
-    //     this.database.ref().child('scores/').orderByChild('userScore').limitToLast(5).on("child_added", (snap) => {
-    //       let scores = snap.val();
-    //
-    //       let keys = Object.values(scores);
-    //       highscores.push(keys);
-    //       // debugger
-    //     });
-    //     debugger
-    //     console.log(highscores);
-    //
-    //   }
-    // }
+      var data = {
+        userInitials: initials,
+        userScore: score
+      };
+      ref.push(data);
 
-    // gotData(data) {
-    //   debugger
-    //   let scores = data.val();
-    //
-    //   let keys = Object.values(scores);
-    //   console.log(keys);
+      this.closeInitialModal();
+      this.retrieveScores();
+    }
+  }, {
+    key: 'retrieveScores',
+    value: function retrieveScores() {
+      var _this3 = this;
 
-    // console.log(keys);
-    // for (let i = 0; i < keys.length; i++) {
-    //   let initials = scores[userInitials];
-    //   let score = scores[userScore];
-    //   console.log(initials, score);
-    // }
-    // console.log(data);
-    // }
+      return this.database.ref('scores/').orderByChild('userScore').limitToLast(5).on("value", function (snap) {
+        var scores = snap.val();
 
+        var highscores = Object.values(scores);
+        var sortedScores = highscores.sort(function (a, b) {
+          return a.userScore < b.userScore ? 1 : b.userScore < a.userScore ? -1 : 0;
+        });
+
+        var parentUl = document.getElementById('score-contain');
+        var list = document.querySelectorAll('.score-listing');
+        for (var i = 0; i < list.length; i++) {
+          list[i].remove();
+        }
+
+        for (var _i = 0; _i < sortedScores.length; _i++) {
+          var highScore = sortedScores[_i];
+          var li = document.createElement('li');
+          li.innerHTML = highScore.userInitials + ": " + highScore.userScore;
+          li.className = 'score-listing';
+          parentUl.appendChild(li);
+        }
+        _this3.callScoreListModal();
+        document.addEventListener('keypress', window.reStartGame);
+      });
+    }
+  }, {
+    key: 'callScoreListModal',
+    value: function callScoreListModal() {
+      this.modal = "open";
+      var scoreListModal = document.getElementsByClassName('end-mod');
+      [].forEach.call(scoreListModal, function (el) {
+        el.className = el.className.replace('hidden-score-list', 'show-score-list');
+      });
+    }
+  }, {
+    key: 'closeScoreListModal',
+    value: function closeScoreListModal() {
+      this.modal = "close";
+      var scoreListModal = document.getElementsByClassName('end-mod');
+      [].forEach.call(scoreListModal, function (el) {
+        el.className = el.className.replace('show-score-list', 'hidden-score-list');
+      });
+      this.sound.fx.modalMusic.pause();
+    }
+  }, {
+    key: 'callInitialModal',
+    value: function callInitialModal() {
+      this.modal = "open";
+      var input = document.getElementById('initials');
+      input.value = "";
+      input.placeholder = "enter initials";
+      var initialModal = document.getElementsByClassName('enter-initials');
+      [].forEach.call(initialModal, function (el) {
+        el.className = el.className.replace('hidden-high-score', 'show-high-score');
+      });
+    }
+  }, {
+    key: 'closeInitialModal',
+    value: function closeInitialModal() {
+      this.modal = "close";
+      var initialModal = document.getElementsByClassName('enter-initials');
+      [].forEach.call(initialModal, function (el) {
+        el.className = el.className.replace('show-high-score', 'hidden-high-score');
+      });
+    }
   }, {
     key: 'callStartModal',
     value: function callStartModal(scope) {
@@ -596,6 +631,16 @@ document.addEventListener('DOMContentLoaded', function () {
       gameView.closeStartModal();
       gameView.start();
       document.removeEventListener('keypress', window.startGame);
+    }
+  };
+
+  window.reStartGame = function (e) {
+    if (e.keyCode === 13) {
+      var newGame = new _game2.default(sound);
+      gameView.game = newGame;
+      gameView.closeScoreListModal();
+      gameView.start();
+      document.removeEventListener('keypress', window.reStartGame);
     }
   };
 

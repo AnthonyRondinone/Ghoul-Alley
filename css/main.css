@@ -56,21 +56,31 @@ body {
 }
 
 .username-input {
-  z-index: 1050;
+  text-align: center;
+  z-index: 500;
   position: fixed;
-  top: 45%;
+  top: 65%;
   left: 50%;
+  height: 40px;
   transform: translate(-50%, -50%);
+  border-radius: 5px;
+  outline: none;
+  background-color: black;
+  color: white;
+  font-size: 30px;
+  opacity: .8;
 }
 
+
 .score-text {
-  color: white;
+  color: black;
   font-size: 40px;
 }
 
 .high-score-contain {
-  opacity: .75;
-  z-index: 1200;
+  font-family: impact;
+  opacity: .8;
+  z-index: 1205;
   position: fixed;
   top: 45%;
   left: 50%;
@@ -78,10 +88,49 @@ body {
   width: 700px;
   height: 400px;
   border-radius: 10px;
-  /*box-shadow: 2px 5px 3px 3px #ccc;*/
+  box-shadow: 2px 5px 3px 3px #ccc;
   display: flex;
   text-align: center;
   justify-content: center;
+  background-image: url('../assets/modalBack.png');
+}
+
+.score-text {
+  opacity: .8;
+  z-index: 1200;
+  z-index: 1050;
+  position: fixed;
+  top: 35%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+.score-list {
+  opacity: .8;
+  z-index: 1202;
+  display: flex;
+  flex-direction: column;
+  color: black;
+  list-style: none;
+  font-family: impact;
+  font-size: 40px;
+}
+
+.leader-head {
+  opacity: .8;
+  padding-bottom: 10px;
+}
+
+.score-listing {
+  opacity: .8;
+}
+
+.hidden-score-list {
+  display: none;
+}
+
+.hidden-high-score {
+  display: none;
 }
 
 .hidden {
@@ -92,7 +141,11 @@ body {
 
 .links {
   font-family: sans-serif;
+<<<<<<< HEAD
   z-index: 1200;
+=======
+  z-index: 1500;
+>>>>>>> highScore
   display: flex;
   flex-direction: row;
   justify-content: space-around;
@@ -115,7 +168,7 @@ body {
 }
 
 .game-contain {
-  z-index: 1100;
+  z-index: 1201;
   position: fixed;
   width: 1000px;
   height: 700px;

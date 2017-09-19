@@ -525,7 +525,7 @@ var GameView = function () {
     key: 'callScoreListModal',
     value: function callScoreListModal() {
       this.modal = "open";
-      var scoreListModal = document.getElementsByClassName('score-list');
+      var scoreListModal = document.getElementsByClassName('end-mod');
       [].forEach.call(scoreListModal, function (el) {
         el.className = el.className.replace('hidden-score-list', 'show-score-list');
       });
@@ -534,7 +534,7 @@ var GameView = function () {
     key: 'closeScoreListModal',
     value: function closeScoreListModal() {
       this.modal = "close";
-      var scoreListModal = document.getElementsByClassName('score-list');
+      var scoreListModal = document.getElementsByClassName('end-mod');
       [].forEach.call(scoreListModal, function (el) {
         el.className = el.className.replace('show-score-list', 'hidden-score-list');
       });

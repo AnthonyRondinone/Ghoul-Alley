@@ -48,12 +48,13 @@
       </ul>
 
 
-      <div class="">
+
         <div class="game-contain">
           <div class="mute-contain">
             <h1 id="mute-off" ></h1>
           </div>
         </div>
+
           <canvas id="canvas" width="1035" height="700"></canvas>
 
 
@@ -63,7 +64,6 @@
         <div class="show start-modal modal-contain-start">
           <img class="show start-modal modal-start-message" src="./assets/startGame.png">
         </div>
-      </div>
 
       <div class="hidden-high-score modal-back enter-initials"></div>
 
@@ -74,15 +74,16 @@
             <h1>to log your score</h1>
           </div>
           <form class="hidden-high-score high-form enter-initials" action="index.html" method="post">
-            <input id="initials" class="username-input" type="text" name="username" value="" placeholder="enter initials" onfocus="this.placeholder=''">
+            <input id="initials" class="username-input" type="text" name="username" value="" placeholder="enter initials" onfocus="this.placeholder=''" maxlength="3">
           </form>
         </div>
 
-        <div class="hidden-score-list modal-back score-list"></div>
-
-        <ul class="hidden-score-list high-score-contain score-list" id="score-contain">
+        <div class="hidden-score-list modal-back end-mod"></div>
+        <ul class="hidden-score-list high-score-contain score-list end-mod" id="score-contain">
+          <h1 class="leader-head">GHOUL LEADERS</h1>
 
         </ul>
+
 
     </div>
 

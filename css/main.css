@@ -57,7 +57,7 @@ body {
 
 .username-input {
   text-align: center;
-  z-index: 1050;
+  z-index: 500;
   position: fixed;
   top: 65%;
   left: 50%;
@@ -79,8 +79,8 @@ body {
 
 .high-score-contain {
   font-family: impact;
-  opacity: .75;
-  z-index: 1200;
+  opacity: .8;
+  z-index: 1205;
   position: fixed;
   top: 45%;
   left: 50%;
@@ -97,7 +97,7 @@ body {
 
 .score-text {
   opacity: .8;
-  z-index: 1201;
+  z-index: 1200;
   z-index: 1050;
   position: fixed;
   top: 35%;
@@ -106,8 +106,8 @@ body {
 }
 
 .score-list {
-  opacity: .9;
-  z-index: 1199;
+  opacity: .8;
+  z-index: 1202;
   display: flex;
   flex-direction: column;
   color: black;
@@ -116,8 +116,13 @@ body {
   font-size: 40px;
 }
 
+.leader-head {
+  opacity: .8;
+  padding-bottom: 10px;
+}
+
 .score-listing {
-  opacity: .9;
+  opacity: .8;
 }
 
 .hidden-score-list {
@@ -136,7 +141,7 @@ body {
 
 .links {
   font-family: sans-serif;
-  z-index: 1200;
+  z-index: 1500;
   display: flex;
   flex-direction: row;
   justify-content: space-around;
@@ -159,7 +164,7 @@ body {
 }
 
 .game-contain {
-  z-index: 1100;
+  z-index: 1201;
   position: fixed;
   width: 1000px;
   height: 700px;

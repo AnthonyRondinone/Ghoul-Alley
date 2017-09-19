@@ -505,6 +505,9 @@ var GameView = function () {
         });
 
         var parentUl = document.getElementById('score-contain');
+        var h1 = document.createElement('h1');
+        h1.innerHTML = "Press ENTER to try again";
+        h1.className = 're-try';
         var list = document.querySelectorAll('.score-listing');
         for (var i = 0; i < list.length; i++) {
           list[i].remove();
@@ -517,6 +520,7 @@ var GameView = function () {
           li.className = 'score-listing';
           parentUl.appendChild(li);
         }
+        parentUl.appendChild(h1);
         _this3.callScoreListModal();
         document.addEventListener('keypress', window.reStartGame);
       });

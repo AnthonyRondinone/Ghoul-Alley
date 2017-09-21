@@ -453,23 +453,25 @@ var GameView = function () {
       this.game.step();
       this.game.draw(this.ctx);
       if (this.player.alive) {
-
+        if (!this.sound.muted) {
+          this.sound.fx.nonHit.muted = false;
+        }
         requestAnimationFrame(this.animate.bind(this));
       }
       if (!this.player.alive) {
         this.sound.fx.splatMan.play();
         this.sound.fx.deadAudio.volume = 0.4;
+        this.sound.fx.deadAudio.currentTime = 0;
         this.sound.fx.deadAudio.play();
         this.sound.fx.BackgroundMusic.pause();
         this.sound.fx.BackgroundMusic.currentTime = 0;
         this.sound.fx.modalMusic.currentTime = 0;
-        // this.game.endDraw(this.ctx);
-        // const scope = this;
+        this.sound.fx.nonHit.muted = true;
         window.setTimeout(function () {
           _this2.sound.fx.modalMusic.play();
+          _this2.callInitialModal();
         }, 3400);
 
-        this.callInitialModal();
         document.querySelector('.high-form').addEventListener('submit', this.logScore);
       }
     }
@@ -522,7 +524,6 @@ var GameView = function () {
         }
         parentUl.appendChild(h1);
         _this3.callScoreListModal();
-        document.addEventListener('keypress', window.reStartGame);
       });
     }
   }, {
@@ -533,6 +534,8 @@ var GameView = function () {
       [].forEach.call(scoreListModal, function (el) {
         el.className = el.className.replace('hidden-score-list', 'show-score-list');
       });
+      document.addEventListener('keypress', window.reStartGame);
+      document.removeEventListener('keypress', window.skipHighScoreStart);
     }
   }, {
     key: 'closeScoreListModal',
@@ -555,6 +558,7 @@ var GameView = function () {
       [].forEach.call(initialModal, function (el) {
         el.className = el.className.replace('hidden-high-score', 'show-high-score');
       });
+      document.addEventListener('keypress', window.skipHighScoreStart);
     }
   }, {
     key: 'closeInitialModal',
@@ -645,6 +649,18 @@ document.addEventListener('DOMContentLoaded', function () {
       gameView.closeScoreListModal();
       gameView.start();
       document.removeEventListener('keypress', window.reStartGame);
+    }
+  };
+
+  window.skipHighScoreStart = function (e) {
+    if (e.keyCode === 32) {
+      gameView.sound.fx.modalMusic.pause();
+      gameView.sound.fx.deadAudio.pause();
+      var newGame = new _game2.default(sound);
+      gameView.game = newGame;
+      gameView.closeInitialModal();
+      gameView.start();
+      document.removeEventListener('keypress', window.skipHighScoreStart);
     }
   };
 

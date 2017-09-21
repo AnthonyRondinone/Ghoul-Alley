@@ -90,6 +90,7 @@ body {
   border-radius: 10px;
   box-shadow: 2px 5px 3px 3px #ccc;
   display: flex;
+  flex-direction: column;
   text-align: center;
   justify-content: center;
   background-image: url('../assets/modalBack.png');
@@ -103,10 +104,19 @@ body {
 
 .score-text {
   opacity: .8;
-  z-index: 1200;
   z-index: 1050;
   position: fixed;
   top: 35%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+.try-again {
+  font-size: 30px;
+  opacity: .8;
+  z-index: 1050;
+  position: fixed;
+  top: 85%;
   left: 50%;
   transform: translate(-50%, -50%);
 }
@@ -121,6 +131,8 @@ body {
   font-family: impact;
   font-size: 40px;
 }
+
+
 
 .leader-head {
   opacity: .8;
